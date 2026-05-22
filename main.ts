@@ -1,25 +1,55 @@
-Deno.serve((req) => {
+Deno.serve(async (req) => {
 
   const url = new URL(req.url);
 
-  // HOME
+  // ROOT
   if (url.pathname === "/") {
     return new Response("SERVER_ONLINE");
   }
 
   // FILEINFO
   if (url.pathname === "/fileinfo") {
-    return new Response("FILEINFO_OK");
+
+    const real = await fetch("https://dl.dir.freefiremobile.com/common/ffwebsite/all/file_list/Android/fileinfo");
+
+    const data = await real.text();
+
+    return new Response(data, {
+      status: 200,
+      headers: {
+        "content-type": "text/plain"
+      }
+    });
   }
 
   // SHADER
   if (url.pathname === "/x-shader") {
-    return new Response("SHADER_OK");
+
+    const real = await fetch("URL_REAL_SHADER");
+
+    const data = await real.arrayBuffer();
+
+    return new Response(data, {
+      status: 200,
+      headers: {
+        "content-type": "application/octet-stream"
+      }
+    });
   }
 
   // ASSET
   if (url.pathname === "/assetindexer-v2") {
-    return new Response("ASSET_OK");
+
+    const real = await fetch("URL_REAL_ASSET");
+
+    const data = await real.arrayBuffer();
+
+    return new Response(data, {
+      status: 200,
+      headers: {
+        "content-type": "application/octet-stream"
+      }
+    });
   }
 
   return new Response("404", {
